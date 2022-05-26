@@ -18,8 +18,9 @@ public class DAOUsuarioRepository {
 	}
 
 	public ModelLogin gravarUser(ModelLogin objeto) throws Exception {
-
-		// try {
+		
+		if(objeto.isNovo()) {/*Grava um novo*/
+		
 
 		String sql = " INSERT INTO model_login (login, senha, nome, email)  VALUES (?, ?, ?, ?)";
 
@@ -32,12 +33,22 @@ public class DAOUsuarioRepository {
 		preparedSql.execute();
 		connection.commit();
 
+		}else {
+			String sql = "UPDATE model_login SET login=?, senha=?, nome=?, email=? WHERE id = "+objeto.getId()+" ;";
+			PreparedStatement prepareSql = connection.prepareStatement(sql);
+			
+			prepareSql.setString(1, objeto.getLogin());
+			prepareSql.setString(2, objeto.getSenha());
+			prepareSql.setString(3, objeto.getNome());
+			prepareSql.setString(4, objeto.getEmail());
+			
+			prepareSql.executeUpdate();
+			connection.commit();
+			
+		}
+		
 		return this.consultaUsuario(objeto.getLogin());
-
-		// } catch (Exception e) {
-		// e.printStackTrace();
-		// }
-
+ 
 	}
 
 	public ModelLogin consultaUsuario(String login) throws Exception {
@@ -65,6 +76,10 @@ public class DAOUsuarioRepository {
 	}
 
 	public boolean validarLogin(String login) throws Exception {
+		
+		
+			
+		
 
 		String sql = "select count(1) > 0 as existe from model_login where upper(login) = upper('" + login + "')";
 
