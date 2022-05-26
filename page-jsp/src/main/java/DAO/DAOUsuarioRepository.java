@@ -27,7 +27,7 @@ public class DAOUsuarioRepository {
 			preparedSql.setString(3, objeto.getNome());
 			preparedSql.setString(4, objeto.getEmail());
 			
-			
+			preparedSql.execute();
 			connection.commit();
 
 		//} catch (Exception e) {
