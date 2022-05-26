@@ -53,12 +53,16 @@ public class ModelLogin implements Serializable {
 	public void setSenha(String senha) {
 		this.senha = senha;
 	}
+	
 
 	@Override
 	public int hashCode() {
 		return Objects.hash(Nome, email, id);
 	}
 
+	
+	
+	
 	@Override
 	public boolean equals(Object obj) {
 		if (this == obj)

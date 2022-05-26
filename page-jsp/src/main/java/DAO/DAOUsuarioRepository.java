@@ -21,6 +21,7 @@ public class DAOUsuarioRepository {
 		//try {
 
 			String sql = " INSERT INTO model_login (login, senha, nome, email)  VALUES (?, ?, ?, ?)";
+			
 			PreparedStatement preparedSql = connection.prepareStatement(sql);
 			preparedSql.setString(1, objeto.getLogin());
 			preparedSql.setString(2, objeto.getSenha());

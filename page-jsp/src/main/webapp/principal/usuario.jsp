@@ -70,12 +70,13 @@
 															</div>
 
 															<div class="form-group form-default">
-																<input type="text" name="id" id="login" maxlength="50"
+																<input type="text" name="login" id="login" maxlength="50"
 																	class="form-control" required="required"
 																	autocomplete="off" value="${modelLogin.login}">
 																<span class="form-bar"></span> <label
 																	class="float-label">Login:</label>
 															</div>
+															
 															<div class="form-group form-default">
 																<input type="password" name="senha" id="senha"
 																	autocomplete="off" maxlength="24" class="form-control"
