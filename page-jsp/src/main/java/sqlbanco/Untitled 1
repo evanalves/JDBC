@@ -25,3 +25,20 @@ ALTER TABLE public."model_Login"
   INSERT INTO public."model_Login"(
             login, senha)
     VALUES ('admin', 'admin');
+    
+    
+    
+    CREATE TABLE public.model_login
+(
+  login character varying(200) NOT NULL,
+  senha character varying(200) NOT NULL,
+  id integer NOT NULL DEFAULT nextval('model_login_id_seq'::regclass),
+  nome character varying(300),
+  email character varying(300) NOT NULL,
+  CONSTRAINT model_login_pkey PRIMARY KEY (id)
+)
+WITH (
+  OIDS=FALSE
+);
+ALTER TABLE public.model_login
+  OWNER TO postgres;

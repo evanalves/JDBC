@@ -43,37 +43,44 @@
 
 													<div class="card-block">
 														<h4 class="sub-title">Cadastro de Usuário</h4>
-														
-							
-														<form class="form-material"  action="<%= request.getContextPath()%>/ServletUsuarioController" method="post">
+
+
+														<form class="form-material"
+															action="<%=request.getContextPath()%>/ServletUsuarioController"
+															method="post">
 															<div class="form-group form-default">
-																<input type="text" name="id" id="id" readonly="readonly"
-																	class="form-control"> <span
-																	class="form-bar"></span> <label class="float-label">ID:</label>
+																<input type="text" name="id" id="id"
+																	class="form-control" readonly="readonly"
+																	value="${modelLogin.id}"> <span class="form-bar"></span>
+																<label class="float-label">ID:</label>
 															</div>
 															<div class="form-group form-default">
 																<input type="text" name="nome" id="nome" maxlength="100"
-																	class="form-control" required="required"> <span
+																	class="form-control" required="required"
+																	value="${modelLogin.nome}"> <span
 																	class="form-bar"></span> <label class="float-label">Nome:
 																</label>
 															</div>
 															<div class="form-group form-default">
 																<input type="email" name="email" id="email"
-																	maxlength="50" class="form-control" required="required" autocomplete="off">
+																	maxlength="50" class="form-control" required="required"
+																	autocomplete="off" value="${modelLogin.email}">
 																<span class="form-bar"></span> <label
 																	class="float-label">E-mail:</label>
 															</div>
-															
+
 															<div class="form-group form-default">
-																<input type="text" name="id" id="login"
-																	maxlength="50" class="form-control" required="required" autocomplete="off">
+																<input type="text" name="id" id="login" maxlength="50"
+																	class="form-control" required="required"
+																	autocomplete="off" value="${modelLogin.login}">
 																<span class="form-bar"></span> <label
 																	class="float-label">Login:</label>
 															</div>
 															<div class="form-group form-default">
-																<input type="password" name="senha" id="senha" autocomplete="off"
-																	maxlength="24" class="form-control" required="required"
-																	value=""> <span class="form-bar"></span> <label
+																<input type="password" name="senha" id="senha"
+																	autocomplete="off" maxlength="24" class="form-control"
+																	required="required" value="${modelLogin.senha}">
+																<span class="form-bar"></span> <label
 																	class="float-label">Senha:</label>
 															</div>
 															<button class="btn btn-primary waves-effect waves-light">Novo</button>
