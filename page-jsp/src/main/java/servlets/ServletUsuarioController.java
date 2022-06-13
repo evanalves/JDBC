@@ -23,14 +23,46 @@ public class ServletUsuarioController extends HttpServlet {
 	protected void doGet(HttpServletRequest request, HttpServletResponse response)
 			throws ServletException, IOException {
 
+		try {
+
+			String acao = request.getParameter("acao");
+
+			if (acao != null && !acao.isEmpty() && acao.equalsIgnoreCase("deletar")) {
+
+				String idUser = request.getParameter("id");
+
+				daoUsuarioRepository.deletarUser(idUser);
+
+				request.setAttribute("msg", "Ecluído com Sucesso");
+				request.getRequestDispatcher("principal/usuario.jsp").forward(request, response);
+
+			} else if (acao != null && !acao.isEmpty() && acao.equalsIgnoreCase("deletarajax")) {
+
+				String idUser = request.getParameter("id");
+
+				daoUsuarioRepository.deletarUser(idUser);
+
+				//request.setAttribute("msg", "Ecluído com Sucesso");
+				
+				response.getWriter().write("Excluido com Sucesso");
+				
+			} else {
+				request.getRequestDispatcher("principal/usuario.jsp").forward(request, response);
+			}
+
+		} catch (Exception e) {
+			e.printStackTrace();
+			RequestDispatcher redirecionar = request.getRequestDispatcher("erro.jsp");
+			redirecionar.forward(request, response);
+		}
+
 	}
 
 	protected void doPost(HttpServletRequest request, HttpServletResponse response)
 			throws ServletException, IOException {
 
 		try {
-			
-		
+
 			String msg = "Operação Realizada com Sucesso!";
 
 			String id = request.getParameter("id");
@@ -50,10 +82,10 @@ public class ServletUsuarioController extends HttpServlet {
 				msg = "já existe usuário com esse login, informe outro!";
 
 			} else {
-				if(modelLogin.isNovo()) {
+				if (modelLogin.isNovo()) {
 					msg = "gravado com sucesso";
-					
-				}else {
+
+				} else {
 					msg = "Atualizado com sucesso";
 				}
 

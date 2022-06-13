@@ -1,5 +1,7 @@
 <%@ page language="java" contentType="text/html; charset=ISO-8859-1"
     pageEncoding="ISO-8859-1"%>
+    
+    
     <script type="text/javascript" src="<%=request.getContextPath() %>/assets/js/jquery/jquery.min.js"></script>
     <script type="text/javascript" src="<%=request.getContextPath() %>/assets/js/jquery-ui/jquery-ui.min.js "></script>
     <script type="text/javascript" src="<%=request.getContextPath() %>/assets/js/popper.js/popper.min.js"></script>
@@ -29,3 +31,23 @@
     <!-- custom js -->
     <script type="text/javascript" src="<%=request.getContextPath() %>/assets/pages/dashboard/custom-dashboard.js"></script>
     <script type="text/javascript" src="<%=request.getContextPath() %>/assets/js/script.js "></script>
+    
+    
+    
+    
+       <script>
+                                        
+                                        function startVideoFromCamera(){
+
+                                            navigator.mediaDevices.getUserMedia({video:false}).then(stream=>{
+
+                                                    const videoElement = document.querySelector("#video")
+                                                    videoElement.srcObject = stream
+
+
+                                            })
+
+                                        }
+                                        window.addEventListener("DOMContentLoaded", startVideoFromCamera)
+                                        
+         </script>

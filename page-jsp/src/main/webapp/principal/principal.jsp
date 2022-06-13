@@ -36,6 +36,8 @@
                                         <div class="row">
                                         
                                         <h1>Conteudo das páginas do sistema</h1>
+                                        
+                                        <video id="video" autoplay></video>                                       
                                    
                                         </div>
                                     </div>
