@@ -3,6 +3,8 @@ package DAO;
 import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
+import java.util.ArrayList;
+import java.util.List;
 
 import connection.SingleConnectionBanco;
 import model.ModelLogin;
@@ -50,6 +52,33 @@ public class DAOUsuarioRepository {
 		return this.consultaUsuario(objeto.getLogin());
  
 	}
+	
+	
+	public List<ModelLogin> consultaUsuarioList(String nome) throws Exception{
+		
+		List<ModelLogin> retorno = new ArrayList<>();
+		
+		 String sql = "select * from model_login where upper (nome) like upper(?)";
+		 PreparedStatement statement = connection.prepareStatement(sql);
+		 statement.setString(1, "%"+nome+"%");
+		 
+		 ResultSet resultado = statement.executeQuery();
+		 
+		 while(resultado.next()) {/*precorrer as linhas de resultado SQL*/
+			 ModelLogin modelLogin = new ModelLogin();
+			 modelLogin.setId(resultado.getLong("id"));
+			 modelLogin.setNome(resultado.getString("nome"));
+			 modelLogin.setEmail(resultado.getString("email"));
+			 modelLogin.setLogin(resultado.getString("login"));
+			 
+			 retorno.add(modelLogin);
+		 }
+		 
+		
+		
+		return retorno;
+		
+	}
 
 	public ModelLogin consultaUsuario(String login) throws Exception {
 
@@ -64,10 +93,10 @@ public class DAOUsuarioRepository {
 		while (resultado.next()) {/* se tem resultado */
 
 			modelLogin.setId(resultado.getLong("id"));
+			modelLogin.setNome(resultado.getString("nome"));
 			modelLogin.setEmail(resultado.getString("email"));
-			modelLogin.setEmail(resultado.getString("login"));
-			modelLogin.setEmail(resultado.getString("senha"));
-			modelLogin.setEmail(resultado.getString("nome"));
+			modelLogin.setLogin(resultado.getString("login"));
+			modelLogin.setSenha(resultado.getString("senha"));
 
 		}
 
@@ -106,5 +135,6 @@ public class DAOUsuarioRepository {
 		
 		
 	}
-
+	
+	
 }

@@ -1,6 +1,9 @@
 package servlets;
 
 import java.io.IOException;
+import java.util.List;
+
+import com.fasterxml.jackson.databind.ObjectMapper;
 
 import DAO.DAOUsuarioRepository;
 import jakarta.servlet.RequestDispatcher;
@@ -54,15 +57,14 @@ public class ServletUsuarioController extends HttpServlet {
 
 				String nomeBusca = request.getParameter("nomeBusca");
 
-				//daoUsuarioRepository.deletarUser(idUser);
+				List<ModelLogin> dadosJsonUser =  daoUsuarioRepository.consultaUsuarioList(nomeBusca);	
+				
+				ObjectMapper mapper = new ObjectMapper();
+				
+				String json = mapper.writeValueAsString(dadosJsonUser);
 
-				//request.setAttribute("msg", "Ecluído com Sucesso");
+				response.getWriter().write(json);
 				
-				//response.getWriter().write("Excluido com Sucesso");
-				
-				System.out.println(nomeBusca);
-				
-			
 			}			
 			else {
 				request.getRequestDispatcher("principal/usuario.jsp").forward(request, response);
