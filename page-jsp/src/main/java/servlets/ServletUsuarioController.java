@@ -36,7 +36,8 @@ public class ServletUsuarioController extends HttpServlet {
 				request.setAttribute("msg", "Ecluído com Sucesso");
 				request.getRequestDispatcher("principal/usuario.jsp").forward(request, response);
 
-			} else if (acao != null && !acao.isEmpty() && acao.equalsIgnoreCase("deletarajax")) {
+			}
+			else if (acao != null && !acao.isEmpty() && acao.equalsIgnoreCase("deletarajax")) {
 
 				String idUser = request.getParameter("id");
 
@@ -46,7 +47,24 @@ public class ServletUsuarioController extends HttpServlet {
 				
 				response.getWriter().write("Excluido com Sucesso");
 				
-			} else {
+			} 
+			
+			
+			else if (acao != null && !acao.isEmpty() && acao.equalsIgnoreCase("buscarUserAjax")) {
+
+				String nomeBusca = request.getParameter("nomeBusca");
+
+				//daoUsuarioRepository.deletarUser(idUser);
+
+				//request.setAttribute("msg", "Ecluído com Sucesso");
+				
+				//response.getWriter().write("Excluido com Sucesso");
+				
+				System.out.println(nomeBusca);
+				
+			
+			}			
+			else {
 				request.getRequestDispatcher("principal/usuario.jsp").forward(request, response);
 			}
 
