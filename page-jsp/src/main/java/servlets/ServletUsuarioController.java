@@ -8,13 +8,13 @@ import com.fasterxml.jackson.databind.ObjectMapper;
 import DAO.DAOUsuarioRepository;
 import jakarta.servlet.RequestDispatcher;
 import jakarta.servlet.ServletException;
-import jakarta.servlet.http.HttpServlet;
+import jakarta.servlet.annotation.WebServlet;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
 import model.ModelLogin;
 
-//@WebServlet("/ServletUsuarioController")
-public class ServletUsuarioController extends HttpServlet {
+@WebServlet(urlPatterns = { "/ServletUsuarioController" })
+public class ServletUsuarioController extends ServletGenericUtil {
 	private static final long serialVersionUID = 1L;
 
 	private DAOUsuarioRepository daoUsuarioRepository = new DAOUsuarioRepository();
@@ -36,37 +36,64 @@ public class ServletUsuarioController extends HttpServlet {
 
 				daoUsuarioRepository.deletarUser(idUser);
 
+				List<ModelLogin> modelLogins = daoUsuarioRepository.consultaUsuarioList(super.getUserLogado(request));
+				request.setAttribute("modelLogins", modelLogins);
+
 				request.setAttribute("msg", "Ecluído com Sucesso");
 				request.getRequestDispatcher("principal/usuario.jsp").forward(request, response);
 
-			}
-			else if (acao != null && !acao.isEmpty() && acao.equalsIgnoreCase("deletarajax")) {
+			} else if (acao != null && !acao.isEmpty() && acao.equalsIgnoreCase("deletarajax")) {
 
 				String idUser = request.getParameter("id");
 
 				daoUsuarioRepository.deletarUser(idUser);
 
-				//request.setAttribute("msg", "Ecluído com Sucesso");
-				
+				// request.setAttribute("msg", "Ecluído com Sucesso");
+
 				response.getWriter().write("Excluido com Sucesso");
-				
-			} 
-			
-			
+
+			}
+
 			else if (acao != null && !acao.isEmpty() && acao.equalsIgnoreCase("buscarUserAjax")) {
 
 				String nomeBusca = request.getParameter("nomeBusca");
 
-				List<ModelLogin> dadosJsonUser =  daoUsuarioRepository.consultaUsuarioList(nomeBusca);	
-				
+				List<ModelLogin> dadosJsonUser = daoUsuarioRepository.consultaUsuarioList(nomeBusca, super.getUserLogado(request));
+
 				ObjectMapper mapper = new ObjectMapper();
-				
+
 				String json = mapper.writeValueAsString(dadosJsonUser);
 
 				response.getWriter().write(json);
+
+			} else if (acao != null && !acao.isEmpty() && acao.equalsIgnoreCase("buscarEditar")) {
+				String id = request.getParameter("id");
+
+				ModelLogin modelLogin = daoUsuarioRepository.consultaUsuarioID(id, super.getUserLogado(request));
 				
-			}			
+				List<ModelLogin> modelLogins = daoUsuarioRepository.consultaUsuarioList( super.getUserLogado(request));
+				request.setAttribute("modelLogins", modelLogins);				
+
+				request.setAttribute("msg", "Usuário em edição");
+				request.setAttribute("modelLogin", modelLogin);
+				request.getRequestDispatcher("principal/usuario.jsp").forward(request, response);
+
+			}
+
+			else if (acao != null && !acao.isEmpty() && acao.equalsIgnoreCase("listarUser")) {
+
+				List<ModelLogin> modelLogins = daoUsuarioRepository.consultaUsuarioList(super.getUserLogado(request));
+				request.setAttribute("modelLogins", modelLogins);
+
+				request.setAttribute("msg", "Usuários Carregados");
+				request.setAttribute("modelLogins", modelLogins);
+				request.getRequestDispatcher("principal/usuario.jsp").forward(request, response);
+
+			}
+
 			else {
+				List<ModelLogin> modelLogins = daoUsuarioRepository.consultaUsuarioList(super.getUserLogado(request));
+				request.setAttribute("modelLogins", modelLogins);
 				request.getRequestDispatcher("principal/usuario.jsp").forward(request, response);
 			}
 
@@ -109,8 +136,13 @@ public class ServletUsuarioController extends HttpServlet {
 					msg = "Atualizado com sucesso";
 				}
 
-				modelLogin = daoUsuarioRepository.gravarUser(modelLogin);
+				modelLogin = daoUsuarioRepository.gravarUser(modelLogin, super.getUserLogado(request));
+				
 			}
+			
+			List<ModelLogin> modelLogins = daoUsuarioRepository.consultaUsuarioList(super.getUserLogado(request));
+			request.setAttribute("modelLogins", modelLogins);				
+			
 
 			request.setAttribute("msg", msg);
 			request.setAttribute("modelLogin", modelLogin);

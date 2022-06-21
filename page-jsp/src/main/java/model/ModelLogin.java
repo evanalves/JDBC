@@ -10,7 +10,7 @@ public class ModelLogin implements Serializable {
 
 	
 	private Long id;
-	private String Nome;
+	private String nome;
 	private String email;
 	private String login;
 	private String senha;
@@ -38,11 +38,11 @@ public class ModelLogin implements Serializable {
 	}
 
 	public String getNome() {
-		return Nome;
+		return nome;
 	}
 
 	public void setNome(String nome) {
-		Nome = nome;
+		this.nome = nome;
 	}
 
 	public String getEmail() {
@@ -72,7 +72,7 @@ public class ModelLogin implements Serializable {
 
 	@Override
 	public int hashCode() {
-		return Objects.hash(Nome, email, id);
+		return Objects.hash(nome, email, id);
 	}
 
 	
@@ -87,12 +87,12 @@ public class ModelLogin implements Serializable {
 		if (getClass() != obj.getClass())
 			return false;
 		ModelLogin other = (ModelLogin) obj;
-		return Objects.equals(Nome, other.Nome) && Objects.equals(email, other.email) && Objects.equals(id, other.id);
+		return Objects.equals(nome, other.nome) && Objects.equals(email, other.email) && Objects.equals(id, other.id);
 	}
 
 	@Override
 	public String toString() {
-		return "ModelLogin [id=" + id + ", Nome=" + Nome + ", email=" + email + ", login=" + login + ", senha=" + senha
+		return "ModelLogin [id=" + id + ", Nome=" + nome + ", email=" + email + ", login=" + login + ", senha=" + senha
 				+ "]";
 	}
 	
