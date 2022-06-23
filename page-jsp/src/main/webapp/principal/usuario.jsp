@@ -1,3 +1,4 @@
+<%@page import="model.ModelLogin"%>
 <%@ page language="java" contentType="text/html; charset=ISO-8859-1" pageEncoding="ISO-8859-1"%>
 	
 	<%@ taglib prefix = "c" uri = "http://java.sun.com/jsp/jstl/core" %>
@@ -67,6 +68,55 @@
 															</div>
 
 															<div class="form-group form-default form-static-label">
+															<select class="form-group form-control"
+																aria-label="Default select example" name="perfil">
+																
+																<option disabled="disabled">[Selecione o Perfil]</option>
+																
+																<option value="ADMIN"<%
+																
+																ModelLogin modelLogin = (ModelLogin) request.getAttribute("modelLogin");
+																
+																
+																
+																if(modelLogin != null && modelLogin.getPerfil().equals("ADMIN")){
+																	out.println(" ");
+																	 out.print("selected=\"selected\"");	
+																	out.println(" ");											
+																} %>>Admin</option>
+																
+																<option value="SECRETARIA"<%
+																
+																
+																  modelLogin = (ModelLogin) request.getAttribute("modelLogin");
+																
+																
+																
+																if(modelLogin != null && modelLogin.getPerfil().equals("SECRETARIA")){
+																	out.println(" ");
+																	 out.print("selected=\"selected\"");	
+																	out.println(" ");
+																	
+																} %>>Secretária</option>
+																
+																<option value="AUXILIAR" <%
+																
+																modelLogin = (ModelLogin) request.getAttribute("modelLogin");
+																
+																if(modelLogin != null && modelLogin.getPerfil().equals("AUXILIAR")){
+																	out.println(" ");
+																	 out.print("selected=\"selected\"");	
+																	out.println(" ");
+																	
+																} %>>Auxiliar</option>
+																
+															</select>
+															<span class="form-bar"></span>
+															<label class="float-label">Perfil:</label>
+															
+															</div>	
+
+															<div class="form-group form-default form-static-label">
 																<input type="text" name="login" id="login" maxlength="50" class="form-control" required="required" autocomplete="off" value="${modelLogin.login}">
 																<span class="form-bar"></span> <label class="float-label">Login:</label>
 															</div>
@@ -74,6 +124,36 @@
 															<div class="form-group form-default form-static-label">
 																<input type="password" name="senha" id="senha" autocomplete="off" maxlength="24" class="form-control" required="required" value="${modelLogin.senha}">
 																<span class="form-bar"></span> <label class="float-label">Senha:</label>
+															</div>
+															
+															<div class="form-group form-default form-static-label">
+															<input type="radio" name="sexo" checked="checked" value="MASCULINO" <% 
+															
+															 modelLogin = (ModelLogin) request.getAttribute("modelLogin");
+															
+															if(modelLogin != null && modelLogin.getSexo().equals("MASCULINO")){
+																out.print(" ");
+																out.print("checked=\"checked\"");
+																out.print(" ");
+															}
+															
+															%>>Masculino</>
+															
+															<input type="radio" name="sexo" value="FEMININO" <% 
+															
+															modelLogin = (ModelLogin) request.getAttribute("modelLogin");
+															
+															if(modelLogin != null && modelLogin.getSexo().equals("FEMININO")){
+																
+																out.print(" ");
+																out.print("checked=\"checked\"");
+																out.print(" ");
+															}
+																
+															
+															
+															
+															%>>Feminino</>																														
 															</div>
 
 															<button class="btn btn-primary waves-effect waves-light" onclick="limparForm()">Novo</button>
