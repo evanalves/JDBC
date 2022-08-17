@@ -52,4 +52,26 @@ select * from model_login where useradmin is false
 
 select * from model_login where upper (nome) like upper('e') and useradmin is false;
 
+ALTER TABLE public.model_login ADD COLUMN cep character varying(250);
+ALTER TABLE public.model_login ADD COLUMN logradouro character varying(250);
+ALTER TABLE public.model_login ADD COLUMN bairro character varying(250);
+ALTER TABLE public.model_login ADD COLUMN localidade character varying(250);
+ALTER TABLE public.model_login ADD COLUMN uf character varying(250);
+ALTER TABLE public.model_login ADD COLUMN numero character varying(250);
 
+
+
+create table telefone (
+
+id integer not null default nextval('telefone_seq'::regclass),
+numero character varying(50) not null,
+usuario_pai_id bigint not null,
+usuario_cad_id bigint not null,
+
+constraint telefone_pkey primary key(id),
+constraint usuario_pai_fk foreign key(usuario_pai_id) references model_login(id),
+constraint usuario_cad_fk foreign key (usuario_cad_id) references model_login(id)	
+
+
+
+)

@@ -1,5 +1,5 @@
 <%@page import="model.ModelLogin"%>
-<%@ page language="java" contentType="text/html; charset=ISO-8859-1" pageEncoding="ISO-8859-1"%>
+<%@ page language="java" contentType="text/html; charset=UTF-8" pageEncoding="UTF-8" %>
 	
 	<%@ taglib prefix = "c" uri = "http://java.sun.com/jsp/jstl/core" %>
 	
@@ -45,12 +45,10 @@
 												<div class="card">
 
 													<div class="card-block">
-														<h4 class="sub-title">Cadastro de Usu�rio</h4>
+														<h4 class="sub-title">Cadastro de Usuário</h4>
 
 
-														<form class="form-material"
-															action="<%=request.getContextPath()%>/ServletUsuarioController"
-															method="post" id="formUser">
+														<form class="form-material" enctype="multipart/form-data" action="<%=request.getContextPath()%>/ServletUsuarioController" method="post" id="formUser">
 
 
 														<input type="hidden" name="acao" id="acao" value="">
@@ -59,6 +57,27 @@
 															<div class="form-group form-default form-static-label">
 																<input type="text" name="id" id="id" class="form-control" readonly="readonly" value="${modelLogin.id}"> <span class="form-bar"></span> <label class="float-label">ID:</label>
 															</div>
+															
+															<div class="form-group form-default input-group mb-4">
+															    <div class="input-group-prepend">
+															    <c:if test="${modelLogin.fotouser != '' && modelLogin.fotouser != null}">
+															     	<a href="<%= request.getContextPath()%>/ServletUsuarioController?acao=downloadFoto&id=${modelLogin.id}">
+															 		<img alt="imagem User" id="fotoembase64" src="${modelLogin.fotouser}" width="70px">	
+															 		</a>	    
+															    </c:if>															    
+															    <c:if test="${modelLogin.fotouser == '' || modelLogin.fotouser == null}">
+															    <img alt="imagem User" id="fotoembase64" src="assets/images/user.png" width="70px">	
+															    
+														
+															    </c:if>
+															    
+															    </div>
+															    <input type="file" id="fileFoto" name="fileFoto" accept="image/*" onchange="visualizarImg('fotoembase64','fileFoto');" class="form-control-file" style="margin-top: 15px; margin-left: 5px; ">
+															 
+																														
+															</div>
+															
+															
 															<div class="form-group form-default form-static-label">
 																<input type="text" name="nome" id="nome" maxlength="100" class="form-control" required="required" value="${modelLogin.nome}"> <span class="form-bar"></span> <label class="float-label">Nome:</label>
 															</div>
@@ -97,7 +116,7 @@
 																	 out.print("selected=\"selected\"");	
 																	out.println(" ");
 																	
-																} %>>Secret�ria</option>
+																} %>>Secretário(a)</option>
 																
 																<option value="AUXILIAR" <%
 																
@@ -113,8 +132,39 @@
 															</select>
 															<span class="form-bar"></span>
 															<label class="float-label">Perfil:</label>
-															
 															</div>	
+															
+															<div class="form-group form-default form-static-label">
+																<input  onblur="pesquisaCep()" type="text" name="cep" id="cep" maxlength="50" class="form-control" required="required" autocomplete="off" value="${modelLogin.cep}">
+																<span class="form-bar"></span> <label class="float-label">CEP:</label>
+															</div>
+															
+															<div class="form-group form-default form-static-label">
+																<input type="text" name="logradouro" id="logradouro" maxlength="50" class="form-control" required="required" autocomplete="off" value="${modelLogin.logradouro}">
+																<span class="form-bar"></span> <label class="float-label">Logradouro:</label>
+															</div>
+															
+															<div class="form-group form-default form-static-label">
+																<input type="text" name="bairro" id="bairro" maxlength="50" class="form-control" required="required" autocomplete="off" value="${modelLogin.bairro}">
+																<span class="form-bar"></span> <label class="float-label">Bairro:</label>
+															</div>
+															
+															<div class="form-group form-default form-static-label">
+																<input type="text" name="localidade" id="localidade" maxlength="50" class="form-control" required="required" autocomplete="off" value="${modelLogin.localidade}">
+																<span class="form-bar"></span> <label class="float-label">Localidade:</label>
+															</div>
+															
+															
+															<div class="form-group form-default form-static-label">
+																<input type="text" name="uf" id="uf" maxlength="50" class="form-control" required="required" autocomplete="off" value="${modelLogin.uf}">
+																<span class="form-bar"></span> <label class="float-label">Estado:</label>
+															</div>
+															
+															<div class="form-group form-default form-static-label">
+																<input type="text" name="numero" id="numero" maxlength="50" class="form-control" required="required" autocomplete="off" value="${modelLogin.numero}">
+																<span class="form-bar"></span> <label class="float-label">Numero:</label>
+															</div>
+															
 
 															<div class="form-group form-default form-static-label">
 																<input type="text" name="login" id="login" maxlength="50" class="form-control" required="required" autocomplete="off" value="${modelLogin.login}">
@@ -159,6 +209,11 @@
 															<button class="btn btn-primary waves-effect waves-light" onclick="limparForm()">Novo</button>
 															<button class="btn btn-success waves-effect waves-light">Salvar</button>
 															<button type="button" class="btn btn-info waves-effect waves-light" onclick="criaDeleteComAjax()">Excluir</button>
+															
+															
+															<c:if test="${modelLogin.id > 0}">
+															<a href="<%=request.getContextPath()%>/ServletTelefone?iduser=${modelLogin.id}" class="btn btn-danger">Telefone</a>															
+															</c:if>																
 															<button type="button" class="btn btn-secondary" data-toggle="modal" data-target="#exampleModalUsuario">Pesquisar</button>
 
 														</form>
@@ -192,10 +247,28 @@
 											</tbody>
 										</table>
 									</div>
-									<!-- Page-body end -->
+
+									<nav aria-label="Page navigation example">
+										<ul class="pagination">
+											
+											<% 
+												int totalPagina = (int) request.getAttribute("totalPagina");
+												
+											for(int p = 0; p < totalPagina; p++ ){
+												String url = request.getContextPath() + "/ServletUsuarioController?acao=paginar&pagina=" + (p * 5);
+												out.print("<li class=\"page-item\"><a class=\"page-link\" href=\""+ url +"\">"+(p + 1)+"</a></li>");
+												
+											}
+											
+											%>
+	
+										</ul>						
+									</nav>
+
 								</div>
-								<div id="styleSelector"></div>
+									<!-- Page-body end -->
 							</div>
+							<div id="styleSelector"></div>
 						</div>
 					</div>
 				</div>
@@ -210,7 +283,7 @@
   <div class="modal-dialog" role="document">
     <div class="modal-content">
       <div class="modal-header">
-        <h5 class="modal-title" id="exampleModalLabel">Pesquisa de usu�rio</h5>
+        <h5 class="modal-title" id="exampleModalLabel">Pesquisa de usuário</h5>
         <button type="button" class="close" data-dismiss="modal" aria-label="Close">
           <span aria-hidden="true">&times;</span>
         </button>
@@ -244,6 +317,13 @@
 </table>
 </div>
 
+<nav arial-label="Page navigation example">
+
+<ul class="pagination" id="ulPaginacaoUserAjax">
+
+
+</ul>
+</nav>
 <span id="totalResultados"></span>
         
       </div>
@@ -258,6 +338,51 @@
 
 	<script type="text/javascript">
 	
+	
+	
+	function pesquisaCep(){
+		
+		var cep = $("#cep").val();
+		
+		$.getJSON("http://viacep.com.br/ws/"+ cep +"/json/?callback=?", function(dados){
+			
+			if (!("erro" in dados)) {
+				
+				  $("cep").val(dados.cep);		
+				  $("#logradouro").val(dados.logradouro);
+                  $("#bairro").val(dados.bairro);
+                  $("#localidade").val(dados.localidade);
+                  $("#uf").val(dados.uf);
+       
+				
+		}
+			
+			
+		});
+		
+	}
+	
+	function visualizarImg(fotoembase64, fileFoto){
+		
+		var preview = document.getElementById(fotoembase64);//campo img do html
+		var fileUser = document.getElementById(fileFoto).files[0];
+		var reader = new FileReader();
+		
+		reader.onloadend = function (){
+			preview.src	= reader.result;/*Carrega a foto na tela*/
+		};
+		
+		if(fileUser){
+			reader.readAsDataURL(fileUser);/*Preview da Imagem*/
+			
+		}else {
+			preview.src= '';
+		}
+		
+	}
+	
+	
+	
 	function verEditar(id) {
 		
 		var urlAction = document.getElementById('formUser').action;
@@ -267,6 +392,60 @@
 		
 	}
 	
+	function buscaUserAjaxPage(url){
+		
+		//alert(url);
+		
+		var urlAction = document.getElementById('formUser').action;	
+		var nomeBusca = document.getElementById('nomeBusca').value;
+		
+		$.ajax({
+			method : "get",
+			url : urlAction,
+			data : url, 
+			success : function(response, textStatus, xhr) {
+				
+			var json = JSON.parse(response);
+			
+			$('#tabelaresultados > tbody > tr').remove();
+			$("#ulPaginacaoUserAjax > li").remove();
+			
+			for(var p = 0; p < json.length; p++){
+				$('#tabelaresultados > tbody').append('<tr> <td>'+json[p].id+'</td> <td>'+json[p].nome+'</td> <td> <button  onclick="verEditar('+json[p].id+')" type="button" class="btn btn-info">Ver</button> </td></tr>');
+				
+			}
+				
+			document.getElementById('totalResultados').textContent = 'Resultados Encontrados: ' + json.length;
+			
+			var totalPagina = xhr.getResponseHeader("totalPagina");
+			
+			for(var p = 0; p < totalPagina; p++){
+				
+				
+				
+				
+				var url = 'nomeBusca=' + nomeBusca + '&acao=buscaUserAjaxPage&pagina=' + (p * 5);
+				
+				$("#ulPaginacaoUserAjax").append('<li class="page-item"><a class="page-link" href="#" onclick="buscaUserAjaxPage(\''+url+'\')">'+ (p + 1) +'</a></li>');
+				
+				
+			}
+				
+
+			}
+
+		}).fail(
+				function(xhr, status, errorThrown) {
+					alert('Erro ao Buscar usuário por nome: ' + xhr.responseText);
+
+	    });
+		
+		
+		
+		
+	}
+	
+	
 		function buscarUsuario(){
 			
 			var nomeBusca = document.getElementById('nomeBusca').value;
@@ -274,17 +453,18 @@
 			if(nomeBusca != null && nomeBusca  != '' && nomeBusca.trim() != ''){ /*validando que tem que ter valor para buscar no banco de dados*/
 				
 			var urlAction = document.getElementById('formUser').action;	
+			
 				
 				$.ajax({
-
 					method : "get",
 					url : urlAction,
 					data : "nomeBusca=" + nomeBusca + '&acao=buscarUserAjax', 
-					success : function(response) {
+					success : function(response, textStatus, xhr) {
 						
 					var json = JSON.parse(response);
 					
 					$('#tabelaresultados > tbody > tr').remove();
+					$("#ulPaginacaoUserAjax > li").remove();
 					
 					for(var p = 0; p < json.length; p++){
 						$('#tabelaresultados > tbody').append('<tr> <td>'+json[p].id+'</td> <td>'+json[p].nome+'</td> <td> <button  onclick="verEditar('+json[p].id+')" type="button" class="btn btn-info">Ver</button> </td></tr>');
@@ -292,13 +472,24 @@
 					}
 						
 					document.getElementById('totalResultados').textContent = 'Resultados Encontrados: ' + json.length;
+					
+					var totalPagina = xhr.getResponseHeader("totalPagina");
+					
+					for(var p = 0; p < totalPagina; p++){
+						
+						var url = 'nomeBusca=' + nomeBusca + '&acao=buscaUserAjaxPage&pagina=' + (p * 5);
+						
+						
+						$("#ulPaginacaoUserAjax").append('<li class="page-item"><a class="page-link" href="#" onclick="buscaUserAjaxPage(\''+url+'\')">'+ (p + 1) +'</a></li>');
+						
+					}
 						
 	
 					}
 
 				}).fail(
 						function(xhr, status, errorThrown) {
-							alert('Erro ao Buscar usu�rio por nome: ' + xhr.responseText);
+							alert('Erro ao Buscar usuário por nome: ' + xhr.responseText);
 
 			    });
 			}
@@ -324,7 +515,7 @@
 
 				}).fail(
 						function(xhr, status, errorThrown) {
-							alert('Erro ao deletar usu�rio com o id'
+							alert('Erro ao deletar usuário com o id'
 									+ xhr.responseText);
 
 						});
